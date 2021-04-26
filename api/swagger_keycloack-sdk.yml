@@ -31,13 +31,13 @@ paths:
         - auth
       summary: "Authenticate"
       description: |
-       Create session cookie, generate PKCE, and redirect to the keycloack login screen using the openid connect protocol
+        Create session cookie, generate PKCE, and redirect to the Keycloak login screen using the OAuth2/OIDC protocols
       operationId: Authenticate
       parameters:
         - name: tenant
           in: query
           description: |
-             Tenant (In the keycloak it is referred to as relm)
+             Tenant (In the keycloak it is referred to as Realm)
           required: true
           allowReserved: true
           schema:
@@ -49,7 +49,7 @@ paths:
         - name: state
           in: query
           description: |
-             Used to maintain state between the request and return.
+             Used to maintain the state between the request and return.
           required: false
           allowReserved: true
           schema:
@@ -58,12 +58,12 @@ paths:
 
       responses:
         "303":
-          description: Redirect to the keycloack login screen using the openid connect protocol
+          description: Redirect to the Keycloak login screen using the OAuth2/OIDC protocols
           headers:
             Location:
               schema:
                 type: string
-                description: Url to the keycloack login screen
+                description: Url to the keycloak login screen
                 example: <base-url>/realms/<tenant>/protocol/openid-connect/auth?client_id=gui&redirect_uri=<base-url>%2Fbackstage%2Fv1%2Fauth%2Freturn&state=<state>&response_type=code&scope=openid"&code_challenge=<code-challenge>&code_challenge_method=<code-challenge-method>
             Set-Cookie:
               schema:
@@ -86,7 +86,7 @@ paths:
         - auth
       summary: "Authenticate Return"
       description: |
-        Called when there is success in the login screen, this endpoint is passed as `redirect_uri` when redirecting to the keycloack login screen and if the login happens correctly the keycloack calls this endpoint. The openid connect protocol is used.
+        Called when there is success in the login screen, this endpoint is passed as `redirect_uri` when redirecting to the keycloak login screen and if the login happens correctly the keycloak calls this endpoint. The OAuth2/OIDC protocols are used.
       operationId: AuthenticateReturn
       parameters:
         - name: code
@@ -100,8 +100,8 @@ paths:
         - name: state
           in: query
           description: |
-             Used to maintain state between the request and return.
-             This value is passed as `state` when redirecting to the keycloack login
+             Used to maintain the state between the request and return.
+             This value is passed as `state` when redirecting to the keycloak login
           required: true
           allowReserved: true
           schema:
@@ -116,7 +116,7 @@ paths:
             type: string
       responses:
         "303":
-          description: Redirects to the url configured in `gui.return.url`. If the process has been successful, the state parameter is passed by the query string, but if there is an error, a parameter error is passed by the query string.
+          description: Redirects to the url configured in `gui.return.url`. If the process has been successful, the `state` parameter is passed by the query string, but if there is an error, a `error` parameter is passed by the query string.
           headers:
             Location:
               schema:
@@ -139,7 +139,7 @@ paths:
         - auth
       summary: "User information"
       description: |
-        Returns information from the active session user such as name, email, tenant (realm) and the permissions associated with that user using openid connect.
+        Returns information from the active session user such as name, email, tenant (realm) and the permissions associated with that user using OIDC protocol.
       operationId: userInfo
       responses:
         "200":
@@ -158,10 +158,7 @@ paths:
                   emailVerified:
                     type: boolean
                   tenant:
-                    description: the same as realm
-                    type: string
-                  realm:
-                    description: the same as tenant
+                    description: the same as Realm
                     type: string
                   permissions:
                     type: array
@@ -192,11 +189,11 @@ paths:
         - auth
       summary: "Revoke"
       description: |
-        Revoke the active user session using openid connect and redirects to the keycloack logout url if there is an active session and that keycloack url redirects to `gui.home.url` or redirects directly to`gui.home.url` with an error query string.
+        Revoke the active user session using OAuth2/OIDC protocols and redirects to the keycloak logout url if there is an active session and that keycloak url redirects to `gui.home.url` or redirects directly to`gui.home.url` with an `error` query string.
       operationId: revoke
       responses:
         "303":
-          description: Redirects to the keycloack logout url or redirects directly to `gui.home.url` with an error
+          description: Redirects to the keycloak logout url or redirects directly to `gui.home.url` with an `error`
           headers:
             Location:
               schema:
@@ -253,7 +250,7 @@ paths:
       summary: "Proxy POST"
       description: |
         This endpoint is a proxy for internal calls to dojot via api gateway (kong). It adds `Authorization: 'Bearer TOKEN'` to the request header based on the current session.
-        It is necessary to have created a cookie for the session using / auth endpoint.
+        It is necessary to have created a cookie for the session using `/auth` endpoint.
         For example, calling `http://localhost:8000/backstage/v1/proxy/device` internally will be called `http://apigw:8000/device`.
       operationId: proxyPost
       x-allow-unknown-query-parameters: true
@@ -288,7 +285,7 @@ paths:
       summary: "Proxy GET"
       description: |
         This endpoint is a proxy for internal calls to dojot via api gateway (kong). It adds `Authorization: 'Bearer TOKEN'` to the request header based on the current session.
-        It is necessary to have created a cookie for the session using / auth endpoint.
+        It is necessary to have created a cookie for the session using `/auth` endpoint.
         For example, calling `http://localhost:8000/backstage/v1/proxy/device` internally will be called `http://apigw:8000/device`.
       operationId: proxyGet
       x-allow-unknown-query-parameters: true
@@ -323,7 +320,7 @@ paths:
       summary: "Proxy PUT"
       description: |
         This endpoint is a proxy for internal calls to dojot via api gateway (kong). It adds `Authorization: 'Bearer TOKEN'` to the request header based on the current session.
-        It is necessary to have created a cookie for the session using / auth endpoint.
+        It is necessary to have created a cookie for the session using `/auth` endpoint.
         For example, calling `http://localhost:8000/backstage/v1/proxy/device` internally will be called `http://apigw:8000/device`.
       operationId: proxyPut
       x-allow-unknown-query-parameters: true
@@ -359,7 +356,7 @@ paths:
       summary: "Proxy PATCH"
       description: |
         This endpoint is a proxy for internal calls to dojot via api gateway (kong). It adds `Authorization: 'Bearer TOKEN'` to the request header based on the current session.
-        It is necessary to have created a cookie for the session using / auth endpoint.
+        It is necessary to have created a cookie for the session using `/auth` endpoint.
         For example, calling `http://localhost:8000/backstage/v1/proxy/device` internally will be called `http://apigw:8000/device`.
       operationId: proxyPatch
       x-allow-unknown-query-parameters: true
@@ -395,7 +392,7 @@ paths:
       summary: "Proxy DELETE"
       description: |
         This endpoint is a proxy for internal calls to dojot via api gateway (kong). It adds `Authorization: 'Bearer TOKEN'` to the request header based on the current session.
-        It is necessary to have created a cookie for the session using / auth endpoint.
+        It is necessary to have created a cookie for the session using `/auth` endpoint.
         For example, calling `http://localhost:8000/backstage/v1/proxy/device` internall will be called `http://apigw:8000/device`.
       operationId: proxyDelete
       x-allow-unknown-query-parameters: true
