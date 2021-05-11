@@ -55,6 +55,7 @@ paths:
           schema:
             type: string
             default: login-state
+<<<<<<< HEAD
         - name: return
           in: query
           description: |
@@ -64,6 +65,8 @@ paths:
           schema:
             type: string
             default: /
+=======
+>>>>>>> 6538ca23a0e8c59b024673ade14e76fed80e3d2e
 
       responses:
         "303":
@@ -125,7 +128,11 @@ paths:
             type: string
       responses:
         "303":
+<<<<<<< HEAD
           description: Redirects to the url configured in `gui.return.url`. TODO If the process has been successful, the `state` parameter is passed by the query string, but if there is an error, a `error` parameter is passed by the query string.
+=======
+          description: Redirects to the url configured in `gui.return.url`. If the process has been successful, the `state` parameter is passed by the query string, but if there is an error, a `error` parameter is passed by the query string.
+>>>>>>> 6538ca23a0e8c59b024673ade14e76fed80e3d2e
           headers:
             Location:
               schema:
@@ -197,6 +204,7 @@ paths:
       tags:
         - auth
       summary: "Revoke"
+<<<<<<< HEAD
       parameters:
         - name: return
           in: query
@@ -213,11 +221,23 @@ paths:
       responses:
         "303":
           description: Redirects to the keycloak logout url or redirects directly to `gui.home.url` TODO with an `error`
+=======
+      description: |
+        Revoke the active user session using OAuth2/OIDC protocols and redirects to the keycloak logout url if there is an active session and that keycloak url redirects to `gui.home.url` or redirects directly to`gui.home.url` with an `error` query string.
+      operationId: revoke
+      responses:
+        "303":
+          description: Redirects to the keycloak logout url or redirects directly to `gui.home.url` with an `error`
+>>>>>>> 6538ca23a0e8c59b024673ade14e76fed80e3d2e
           headers:
             Location:
               schema:
                 type: string
+<<<<<<< HEAD
                 example: <base-url>/realms/<tenant>/protocol/openid-connect/logout?redirect_uri=<gui.home.url> TODO || <gui.home.url>?error=<error-message-if-there-is-an-error> TODO
+=======
+                example: <base-url>/realms/<tenant>/protocol/openid-connect/logout?redirect_uri=<gui.home.url> || <gui.home.url>?error=<error-message-if-there-is-an-error>
+>>>>>>> 6538ca23a0e8c59b024673ade14e76fed80e3d2e
         default:
           description: Unexpected error
   /backstage/v1/graphql:

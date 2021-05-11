@@ -17,6 +17,13 @@ const mockConfig = {
     'base.url': 'http://localhost:8000',
     'internal.base.url': 'http://apigw:8000',
   },
+<<<<<<< HEAD
+=======
+  gui: {
+    'return.url': 'http://localhost:8000/return',
+    'home.url': 'http://localhost:8000',
+  },
+>>>>>>> 6538ca23a0e8c59b024673ade14e76fed80e3d2e
   proxy: {
     target: 'http://127.0.0.1:34059',
     'log.level': 'debug',
@@ -33,8 +40,12 @@ const mockSdk = {
   },
   Logger: jest.fn(() => ({
     debug: jest.fn(),
+<<<<<<< HEAD
     // error: jest.fn(),
     error: (a, b, c, d) => console.log(a, b, c, d),
+=======
+    error: jest.fn(),
+>>>>>>> 6538ca23a0e8c59b024673ade14e76fed80e3d2e
     info: jest.fn(),
     warn: jest.fn(),
   })),
@@ -156,6 +167,7 @@ describe('RoutesV1', () => {
   test('/backstage/v1/auth: ok', (done) => {
     api
       .get('/backstage/v1/auth?tenant=admin&return=/')
+      .get('/backstage/v1/auth?tenant=admin')
       .then((res) => {
         expect(res.statusCode).toBe(303);
         expect(res.redirect).toBe(true);
@@ -245,6 +257,7 @@ describe('RoutesV1', () => {
       });
   });
 
+<<<<<<< HEAD
   // test('/backstage/v1/auth/return: without call /auth ', (done) => {
   //   mockRedisGet.mockResolvedValueOnce(sessionBaseObj);
   //   api
@@ -257,6 +270,20 @@ describe('RoutesV1', () => {
   //       done();
   //     });
   // });
+=======
+  test('/backstage/v1/auth/return: without call /auth ', (done) => {
+    mockRedisGet.mockResolvedValueOnce(sessionBaseObj);
+    api
+      .get('/backstage/v1/auth/return?code=code&state=state&session_state=session_state')
+      .set('Cookie', [cookies])
+      .then((response) => {
+        expect(response.statusCode).toBe(303);
+        expect(response.redirect).toBe(true);
+        expect(response.header.location).toBe('http://localhost:8000/return?error=There+is+no+active+session');
+        done();
+      });
+  });
+>>>>>>> 6538ca23a0e8c59b024673ade14e76fed80e3d2e
 
   test('/backstage/v1/auth/return: without query string ', (done) => {
     api
@@ -387,7 +414,11 @@ describe('RoutesV1', () => {
   test('/backstage/v1/auth/revoke: ok', (done) => {
     mockRedisGet.mockResolvedValueOnce(sessionMockComplete);
     api
+<<<<<<< HEAD
       .get('/backstage/v1/auth/revoke?return=/')
+=======
+      .get('/backstage/v1/auth/revoke')
+>>>>>>> 6538ca23a0e8c59b024673ade14e76fed80e3d2e
       .set('Cookie', [cookies])
       .then((response) => {
         expect(response.statusCode).toBe(303);
@@ -400,7 +431,11 @@ describe('RoutesV1', () => {
   test('/backstage/v1/auth/revoke: no session ok', (done) => {
     mockRedisGet.mockResolvedValueOnce(sessionBaseObj);
     api
+<<<<<<< HEAD
       .get('/backstage/v1/auth/revoke?return=/')
+=======
+      .get('/backstage/v1/auth/revoke')
+>>>>>>> 6538ca23a0e8c59b024673ade14e76fed80e3d2e
       .set('Cookie', [cookies])
       .then((response) => {
         expect(response.statusCode).toBe(303);
@@ -414,7 +449,11 @@ describe('RoutesV1', () => {
     mockRedisGet.mockResolvedValueOnce(sessionMockComplete);
     mockRedisDestroy.mockRejectedValueOnce(new Error());
     api
+<<<<<<< HEAD
       .get('/backstage/v1/auth/revoke?return=/')
+=======
+      .get('/backstage/v1/auth/revoke')
+>>>>>>> 6538ca23a0e8c59b024673ade14e76fed80e3d2e
       .set('Cookie', [cookies])
       .then((response) => {
         expect(response.statusCode).toBe(303);
