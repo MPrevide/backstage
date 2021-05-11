@@ -105,7 +105,7 @@ The sequence diagram (figure 2) shows the main flows and below the figure are ex
    1. The user places his login and password, and sends it to the keycloak. If they are valid, the keycloak continues the flow and redirects to the URL via GET defined in redirect_uri, in the case `<app.base.url>/backstage/v1/auth/return`,passing the Authorization Code and State in the QueryString of the URL.
    1. The Backstage `<app.base.url>/backstage/v1/auth/return` endpoint receives the Authorization Code. (As much as the request is made for the backend, the return happens in the browser and the authorization code is exposed, which is not a problem since we have the PKCE verification in the backend).
    1. The Backstage makes a request to the keycloak to obtain the Token and Refresh Token via POST with content-type of type 'application/x-www-form-urlencoded' for URL `<keycloak.url.api.gateway>/auth/realms/$TENANT/protocol/openid-connect/token` passing in the request body `grant_type=authorization_code & redirect_uri=$REDIRECT_URI&client_id=<keycloak.public.client.id>&code_verifier=$CODE_VERIFIER&code=$AUTHORIZATION_CODE`.
-   1. If the backstage flow works, that is, the Backstage is able to receive the Token and the Refresh Token, the Backstage redirects with the code 303 to `<gui.return.url>` and `state=$STATE`.
+   1. If the backstage flow works, that is, the Backstage is able to receive the Token and the Refresh Token, the Backstage redirects with the code 303 to TODO `<gui.return.url>` TODO and `state=$STATE`.
    1. The redirected URL is called in the Browser
    1. The page is requested for the GUI
    1. The GUI checks if there is a valid session, to do so, it makes a request via GET to `<app.base.url>/backstage/v1/auth/user-info`
@@ -113,7 +113,7 @@ The sequence diagram (figure 2) shows the main flows and below the figure are ex
    1. The page is loaded with information from the logged in user.
    - Alternative to 2.4: if you are unable to obtain the Tokens
       - Deletes the redis session
-      - The user is redirected to `gui.return.url` and a message is sent in QueryString saying that there was a problem, the GUI handles the message.
+      - The user is redirected to `gui.return.url` TODO and a message is sent in QueryString saying that there was a problem, the GUI handles the message.
    - Alternative to 2.8: if you can't get data from the active session
       - The session is deleted and returns 401
 3. An example Flow of obtaining data from dojot APIs
@@ -181,8 +181,6 @@ convention.
 | --- | ------- | ------------- | ------------ | --------------------
 | app.base.url| The URL where this service will be available  | <http://localhost:8000> | URL | BS_APP_BASE_URL
 | app.internal.base.url| Internal access URL. In the case of dojot it is the URL to access the kong, our API Gateway, there is still an internal authorization check for access to the endpoint/resource if you are using the pepkong plugin. | <http://apigw:8000> | URL | BS_APP_INTERNAL_BASE_URL
-| gui.return.url | GUI URL. URL available via browser to receive the response when the login process is complete. | <http://localhost:8000/return> | URL | BS_GUI_RETURN_URL
-| gui.home.url | Initial GUI URL, URL available via browser. | <http://localhost:8000> | URL | BS_GUI_HOME_URL
 | log.console.level | Console logger level | info | info, debug, error, warn | BS_LOG_CONSOLE_LEVEL
 | log.file | Enables logging on file (location: /var/log/backstage-logs-%DATE%.log) | false | boolean  | BS_LOG_FILE
 | log.file.level  | Log level to log on files | info | string  | BS_LOG_FILE_LEVEL
