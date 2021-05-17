@@ -5,7 +5,7 @@ const {
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const { replaceTLSFlattenConfigs } = require('../../Utils');
 
-const logger = new Logger('backstage:express/interceptors/session/Session');
+const logger = new Logger('backstage:express/interceptors/Proxy');
 
 const { proxy: configProxy } = getConfig('BS');
 
