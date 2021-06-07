@@ -22,7 +22,11 @@ const {
   getDevicesByTemplate,
   OPERATION,
   SOURCE,
+<<<<<<< HEAD:app/graphql/device/Resolvers.js
   WIDGET_TYPE,
+=======
+  WIDGET_TYPE
+>>>>>>> cddf626fe1a96791c9fcb83acbe7534150c6e976:src/graphql/device/Resolvers.js
 } = require('./Helpers');
 
 const paramsAxios = {
@@ -147,6 +151,7 @@ const Resolvers = {
     ) {
       setToken(context.token);
       const {
+<<<<<<< HEAD:app/graphql/device/Resolvers.js
         filter: {
           dateFrom = '', dateTo = '', lastN = '1', devices = [], templates = [],
         },
@@ -155,6 +160,10 @@ const Resolvers = {
           operationType = OPERATION.LAST.N,
           widgetType = WIDGET_TYPE.DEFAULT,
         },
+=======
+        filter: { dateFrom = '', dateTo = '', lastN = '1', devices = [], templates = [] },
+        configs: { sourceType = SOURCE.DEVICE, operationType = OPERATION.LAST.N, widgetType = WIDGET_TYPE.DEFAULT }
+>>>>>>> cddf626fe1a96791c9fcb83acbe7534150c6e976:src/graphql/device/Resolvers.js
       } = props;
       let sortedHistory = [];
       let queryStringParams = '';
@@ -164,7 +173,11 @@ const Resolvers = {
       let devicesFromTemplate = [];
       let deviceDictionary = {};
 
+<<<<<<< HEAD:app/graphql/device/Resolvers.js
       switch (operationType) {
+=======
+      switch( operationType ) {
+>>>>>>> cddf626fe1a96791c9fcb83acbe7534150c6e976:src/graphql/device/Resolvers.js
         case OPERATION.LAST.N:
           // To get the latest N records
           queryStringParams += `${lastN && `&lastN=${lastN}`}`;
@@ -191,6 +204,7 @@ const Resolvers = {
           break;
       }
       try {
+<<<<<<< HEAD:app/graphql/device/Resolvers.js
         switch (sourceType) {
           case SOURCE.DEVICE:
             const devicesIds = devices.map((device) => device.deviceID);
@@ -199,6 +213,16 @@ const Resolvers = {
             break;
           case SOURCE.TEMPLATE:
             const ret = await getDevicesByTemplate(templates, optionsAxios);
+=======
+        switch( sourceType ) {
+          case SOURCE.DEVICE:
+            const devicesIds = devices.map(device => device.deviceID)
+            dojotDevices = await getDevices(devicesIds, optionsAxios)
+            dynamicAttrs = await getHistory(devices, optionsAxios, queryStringParams)
+            break;
+          case SOURCE.TEMPLATE:
+            const ret = await getDevicesByTemplate(templates, optionsAxios)
+>>>>>>> cddf626fe1a96791c9fcb83acbe7534150c6e976:src/graphql/device/Resolvers.js
             dojotDevices = ret.values;
             devicesFromTemplate = ret.devicesIDs;
             deviceDictionary = ret.deviceDictionary;
@@ -209,12 +233,21 @@ const Resolvers = {
             break;
         }
 
+<<<<<<< HEAD:app/graphql/device/Resolvers.js
         if (widgetType === WIDGET_TYPE.MAP || widgetType === WIDGET_TYPE.TABLE) {
           if (sourceType === SOURCE.DEVICE) {
             staticAttrs = getStaticAttributes(dojotDevices, devices);
           }
           if (sourceType === SOURCE.TEMPLATE) {
             staticAttrs = getStaticAttributes(dojotDevices, devicesFromTemplate);
+=======
+        if( widgetType === WIDGET_TYPE.MAP || widgetType === WIDGET_TYPE.TABLE ) {
+          if( sourceType === SOURCE.DEVICE ) {
+            staticAttrs = getStaticAttributes(dojotDevices, devices)
+          }
+          if( sourceType === SOURCE.TEMPLATE ) {
+            staticAttrs = getStaticAttributes(dojotDevices, devicesFromTemplate)
+>>>>>>> cddf626fe1a96791c9fcb83acbe7534150c6e976:src/graphql/device/Resolvers.js
           }
         }
       } catch (error) {
@@ -222,6 +255,7 @@ const Resolvers = {
         throw error;
       }
 
+<<<<<<< HEAD:app/graphql/device/Resolvers.js
       const {
         history,
         historyObj,
@@ -234,6 +268,11 @@ const Resolvers = {
       );
 
       if (widgetType === WIDGET_TYPE.MAP) {
+=======
+      const { history, historyObj } = formatOutPut(dynamicAttrs, staticAttrs, dojotDevices, deviceDictionary, sourceType, widgetType);
+
+      if( widgetType === WIDGET_TYPE.MAP ) {
+>>>>>>> cddf626fe1a96791c9fcb83acbe7534150c6e976:src/graphql/device/Resolvers.js
         return JSON.stringify(historyObj);
       }
 

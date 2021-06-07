@@ -85,15 +85,23 @@ const generateTemplateKey = (deviceDictionary, device, attr) => {
   return undefined;
 };
 
+<<<<<<< HEAD:app/graphql/device/Helpers.js
 const parseValue = (value) => {
   if (typeof value === 'boolean') {
     return value;
   }
   // eslint-disable-next-line no-restricted-globals
+=======
+const parseValue = value => {
+  if (typeof value === 'boolean' ) {
+    return value;
+  }
+>>>>>>> cddf626fe1a96791c9fcb83acbe7534150c6e976:src/graphql/device/Helpers.js
   if (isNaN(value)) {
     return value;
   }
   return parseFloat(value);
+<<<<<<< HEAD:app/graphql/device/Helpers.js
 };
 
 const formatOutPut = (
@@ -109,6 +117,14 @@ const formatOutPut = (
   dynamicAttributes.forEach(({
     attr, device_id, value, ts,
   }) => {
+=======
+}
+
+const formatOutPut = (dynamicAttributes, staticAttributes, dojotDevices, deviceDictionary, sourceType, widgetType) => {
+  const history = [];
+  const historyObj = {};
+  dynamicAttributes.forEach(({attr, device_id, value, ts}) => {
+>>>>>>> cddf626fe1a96791c9fcb83acbe7534150c6e976:src/graphql/device/Helpers.js
     if (widgetType === WIDGET_TYPE.MAP) {
       historyObj[`${device_id}${attr}`] = {
         value: parseGeo(value),
@@ -123,17 +139,40 @@ const formatOutPut = (
         timestamp: moment(ts).utc().format('YYYY-MM-DDTHH:mm:ss[Z]'),
       });
     } else {
+<<<<<<< HEAD:app/graphql/device/Helpers.js
       history.push({
         [generateTemplateKey(deviceDictionary, device_id, attr)]: parseValue(value),
         deviceLabel: dojotDevices[device_id] ? dojotDevices[device_id].label : 'undefined',
         timestamp: moment(ts).utc().format('YYYY-MM-DDTHH:mm:ss[Z]'),
       });
+=======
+      if (sourceType === SOURCE.DEVICE) {
+        history.push({
+          [`${device_id}${attr}`]: parseValue(value),
+          deviceLabel: dojotDevices[device_id] ? dojotDevices[device_id].label : 'undefined',
+          timestamp: moment(ts).utc().format("YYYY-MM-DDTHH:mm:ss[Z]"),
+        });
+      }
+      else {
+        history.push({
+          [generateTemplateKey(deviceDictionary, device_id, attr)]: parseValue(value),
+          deviceLabel: dojotDevices[device_id] ? dojotDevices[device_id].label : 'undefined',
+          timestamp: moment(ts).utc().format("YYYY-MM-DDTHH:mm:ss[Z]"),
+        });
+      }
+
+>>>>>>> cddf626fe1a96791c9fcb83acbe7534150c6e976:src/graphql/device/Helpers.js
     }
   });
 
   if (widgetType === WIDGET_TYPE.MAP) {
+<<<<<<< HEAD:app/graphql/device/Helpers.js
     Object.values(staticAttributes).forEach(({ deviceID, deviceLabel, ...otherProps }) => {
       Object.values(otherProps).forEach(({ static_value, created, label }) => {
+=======
+    Object.values(staticAttributes).forEach(({deviceID, deviceLabel, ...otherProps}) => {
+      Object.values(otherProps).forEach(({static_value, created, label}) => {
+>>>>>>> cddf626fe1a96791c9fcb83acbe7534150c6e976:src/graphql/device/Helpers.js
         historyObj[`${deviceID}${label}`] = {
           value: parseGeo(static_value),
           timestamp: moment(created).utc().format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'),
@@ -266,5 +305,9 @@ module.exports = {
   getDevicesByTemplate,
   OPERATION,
   WIDGET_TYPE,
+<<<<<<< HEAD:app/graphql/device/Helpers.js
   SOURCE,
+=======
+  SOURCE
+>>>>>>> cddf626fe1a96791c9fcb83acbe7534150c6e976:src/graphql/device/Helpers.js
 };
